@@ -19,13 +19,9 @@ import java.text.SimpleDateFormat
 
 @Composable
 fun TimestampConversionPage(backAction: () -> Unit) {
-    val ticker = rememberTicker()
-    val currentTime by ticker.tickerFlow.collectAsState() // 单位毫秒
+    val currentTime by rememberTicker().tickerFlow.collectAsState() // 单位毫秒，内部使用一个 Job 来定时刷新，且生命周期跟随布局
     val timeUnit = remember { mutableStateOf(TimeUnit.MILLIS) }
     var sourceTimestamp by remember { mutableStateOf(currentTime) } // 直接从 flow 里面取一下当前时间
-    var targetFormattedTimeStr by remember {
-        mutableStateOf(getFormattedTimeStr(currentTime.toString(), timeUnit.value))
-    }
 
     Column {
         IconButton(
@@ -49,7 +45,6 @@ fun TimestampConversionPage(backAction: () -> Unit) {
                         value = sourceTimestamp.toString(),
                         onValueChange = {
                             sourceTimestamp = it.toLongOrNull() ?: 0L
-                            targetFormattedTimeStr = getFormattedTimeStr(it, timeUnit.value)
                         },
                         modifier = Modifier
                             .width(160.dp)
@@ -69,11 +64,9 @@ fun TimestampConversionPage(backAction: () -> Unit) {
                             }
                         }
                     )
-                    DropdownMenu(timeUnit) { selectedTimeUnit ->
-                        targetFormattedTimeStr = getFormattedTimeStr(sourceTimestamp.toString(), timeUnit.value)
-                    }
+                    DropdownMenu(timeUnit)
                     BasicTextField(
-                        value = targetFormattedTimeStr,
+                        value = getFormattedTimeStr(sourceTimestamp.toString(), timeUnit.value),
                         onValueChange = { },
                         modifier = Modifier
                             .width(240.dp)

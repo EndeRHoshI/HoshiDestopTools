@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import org.hoshi.destoptools.data.TimeUnit
 
 @Composable
-fun DropdownMenu(currentUnit: MutableState<TimeUnit>, selectedAction: (TimeUnit) -> Unit) {
+fun DropdownMenu(currentUnit: MutableState<TimeUnit>) {
     var expanded by remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
@@ -41,7 +41,6 @@ fun DropdownMenu(currentUnit: MutableState<TimeUnit>, selectedAction: (TimeUnit)
                 text = { Text("毫秒") },
                 onClick = {
                     currentUnit.value = TimeUnit.MILLIS
-                    selectedAction.invoke(TimeUnit.MILLIS)
                     expanded = false
                 }
             )
@@ -49,7 +48,6 @@ fun DropdownMenu(currentUnit: MutableState<TimeUnit>, selectedAction: (TimeUnit)
                 text = { Text("秒") },
                 onClick = {
                     currentUnit.value = TimeUnit.SEC
-                    selectedAction.invoke(TimeUnit.SEC)
                     expanded = false
                 }
             )
