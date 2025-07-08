@@ -11,6 +11,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import org.hoshi.destoptools.utils.TimeUtils
 import org.hoshi.destoptools.utils.rememberTicker
 import java.text.SimpleDateFormat
 import java.util.*
@@ -51,21 +52,21 @@ private fun getCurrentTimeStr(currentTime: Long): String {
 }
 
 private fun getCurrentYearDay(currentTime: Long): String {
-    val calendar = getCommonCalendar(currentTime)
+    val calendar = TimeUtils.getCommonCalendar(currentTime)
     val year = calendar.get(Calendar.YEAR) // 获取年份
     val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR) // 获取当年第几天
     return "$year 年的第 $dayOfYear 天"
 }
 
 private fun getCurrentMonthWeek(currentTime: Long): String {
-    val calendar = getCommonCalendar(currentTime)
+    val calendar = TimeUtils.getCommonCalendar(currentTime)
     val month = calendar.get(Calendar.MONTH) + 1 // 获取月份（注意：Calendar 月份从 0 开始，需要 + 1）
     val week = calendar.get(Calendar.WEEK_OF_MONTH)// 获取当月第几周
     return "$month 月的第 $week 周"
 }
 
 private fun getCurrentYearWeekDay(currentTime: Long): String {
-    val calendar = getCommonCalendar(currentTime)
+    val calendar = TimeUtils.getCommonCalendar(currentTime)
     val year = calendar.get(Calendar.YEAR) // 获取年份
     val week = calendar.get(Calendar.WEEK_OF_YEAR) // 获取当年第几周
     var day = calendar.get(Calendar.DAY_OF_WEEK) // 获取星期几
@@ -76,9 +77,4 @@ private fun getCurrentYearWeekDay(currentTime: Long): String {
         day --
     }
     return "$year 年的第 $week 周第 $day 天"
-}
-
-private fun getCommonCalendar(currentTime: Long) = Calendar.getInstance().apply {
-    firstDayOfWeek = Calendar.MONDAY
-    timeInMillis = currentTime
 }
