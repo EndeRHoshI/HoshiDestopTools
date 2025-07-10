@@ -6,6 +6,9 @@
 * 进制转换
 * 时间戳转换
 
+## README from Google
+下面这个是 Google 自动生成的 README，保留一下以供参考
+
 This is a Kotlin Multiplatform project targeting Desktop.
 
 * `/composeApp` is for code that will be shared across your Compose Multiplatform applications.
