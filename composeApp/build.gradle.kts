@@ -42,6 +42,13 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "org.hoshi.destoptools"
             packageVersion = "1.0.0"
+
+            windows {
+                iconFile.set(project.file("launcher/icon.icns"))
+            }
+            macOS {
+                iconFile.set(project.file("launcher/icon.ico"))
+            }
         }
     }
 }
