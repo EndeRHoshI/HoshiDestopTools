@@ -1,4 +1,4 @@
-package org.hoshi.destoptools.data
+package org.hoshi.desktoptools.data
 
 enum class TimeUnit{
     SEC, // 秒

@@ -1,4 +1,4 @@
-package org.hoshi.destoptools.page
+package org.hoshi.desktoptools.page
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,8 +11,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import org.hoshi.destoptools.utils.TimeUtils
-import org.hoshi.destoptools.utils.rememberTicker
+import org.hoshi.desktoptools.utils.TimeUtils
+import org.hoshi.desktoptools.utils.rememberTicker
 import java.text.SimpleDateFormat
 import java.util.*
 

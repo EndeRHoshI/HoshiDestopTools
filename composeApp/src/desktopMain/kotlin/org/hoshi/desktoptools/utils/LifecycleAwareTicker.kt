@@ -1,4 +1,4 @@
-package org.hoshi.destoptools.utils
+package org.hoshi.desktoptools.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect

@@ -1,4 +1,4 @@
-package org.hoshi.destoptools.utils
+package org.hoshi.desktoptools.utils
 
 import java.util.Calendar
 

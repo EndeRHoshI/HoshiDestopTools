@@ -1,4 +1,4 @@
-package org.hoshi.destoptools.page
+package org.hoshi.desktoptools.page
 
 object Router {
 

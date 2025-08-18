@@ -1,4 +1,4 @@
-package org.hoshi.destoptools
+package org.hoshi.desktoptools
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -11,10 +11,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.hoshi.destoptools.page.RadixConversionPage
-import org.hoshi.destoptools.page.Router
-import org.hoshi.destoptools.page.TimestampConversionPage
-import org.hoshi.destoptools.page.WhatWeekPage
+import org.hoshi.desktoptools.page.RadixConversionPage
+import org.hoshi.desktoptools.page.Router
+import org.hoshi.desktoptools.page.TimestampConversionPage
+import org.hoshi.desktoptools.page.WhatWeekPage
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable

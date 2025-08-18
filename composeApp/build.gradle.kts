@@ -36,11 +36,11 @@ kotlin {
 
 compose.desktop {
     application {
-        mainClass = "org.hoshi.destoptools.MainKt"
+        mainClass = "org.hoshi.desktoptools.MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "org.hoshi.destoptools"
+            packageName = "DesktopTools"
             packageVersion = "1.0.0"
 
             windows {

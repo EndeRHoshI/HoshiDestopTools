@@ -1,4 +1,4 @@
-package org.hoshi.destoptools.widget
+package org.hoshi.desktoptools.widget
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text

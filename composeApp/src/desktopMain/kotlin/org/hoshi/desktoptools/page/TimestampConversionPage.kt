@@ -1,4 +1,4 @@
-package org.hoshi.destoptools.page
+package org.hoshi.desktoptools.page
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -13,11 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import org.hoshi.destoptools.data.TimeUnit
-import org.hoshi.destoptools.extentions.matchTrue
-import org.hoshi.destoptools.utils.TimeUtils
-import org.hoshi.destoptools.utils.rememberTicker
-import org.hoshi.destoptools.widget.DropdownMenu
+import org.hoshi.desktoptools.data.TimeUnit
+import org.hoshi.desktoptools.extentions.matchTrue
+import org.hoshi.desktoptools.utils.TimeUtils
+import org.hoshi.desktoptools.utils.rememberTicker
+import org.hoshi.desktoptools.widget.DropdownMenu
 import java.text.SimpleDateFormat
 import java.util.*
 

@@ -1,4 +1,4 @@
-package org.hoshi.destoptools.page
+package org.hoshi.desktoptools.page
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -25,7 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import org.hoshi.destoptools.widget.SingleConfirmDialog
+import org.hoshi.desktoptools.widget.SingleConfirmDialog
 import java.math.BigInteger
 
 @Composable

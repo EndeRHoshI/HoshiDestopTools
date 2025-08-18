@@ -1,4 +1,4 @@
-package org.hoshi.destoptools.extentions
+package org.hoshi.desktoptools.extentions
 
 /**
  * 匹配 true false 取不同值

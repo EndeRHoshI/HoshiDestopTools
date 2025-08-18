@@ -1,4 +1,4 @@
-rootProject.name = "HoshiDestopTools"
+rootProject.name = "HoshiDesktopTools"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
