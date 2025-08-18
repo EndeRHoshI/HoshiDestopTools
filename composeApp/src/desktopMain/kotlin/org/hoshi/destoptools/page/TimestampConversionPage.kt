@@ -251,7 +251,7 @@ private fun getTimestamp(
     second: String
 ): String {
     val yearInt = year.toIntOrNull()
-    val monthInt = month.toIntOrNull()
+    val monthInt = (month.toIntOrNull() ?: 0) - 1 // 月份要减去 1 才对，比如 1 月份就应该是 0
     val dayInt = day.toIntOrNull()
     val hourInt = hour.toIntOrNull()
     val minuteInt = minute.toIntOrNull()
@@ -259,7 +259,7 @@ private fun getTimestamp(
     if (yearInt == null || yearInt < 0) {
         return "年份输入错误"
     }
-    if (monthInt == null || monthInt < 0 || monthInt > 12) {
+    if (monthInt < 0 || monthInt > 12) {
         return "月输入错误"
     }
     if (dayInt == null || dayInt < 0 || dayInt > 31) {
