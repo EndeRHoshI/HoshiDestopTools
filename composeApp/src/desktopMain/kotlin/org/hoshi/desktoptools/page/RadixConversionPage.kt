@@ -29,7 +29,7 @@ import org.hoshi.desktoptools.widget.SingleConfirmDialog
 import java.math.BigInteger
 
 @Composable
-fun RadixConversionPage(backAction: () -> Unit) {
+fun RadixConversionPage() {
     var sourceNumber by remember { mutableStateOf("") }
     var targetNumber by remember { mutableStateOf("") }
     val sourceRadix = remember { mutableStateOf(10) } // 原始进制，默认 10
@@ -62,14 +62,10 @@ fun RadixConversionPage(backAction: () -> Unit) {
         contentAlignment = Alignment.TopCenter
     ) {
         Column {
-            IconButton(
-                { backAction.invoke() }
-            ) {
-                Text("返回")
-            }
             Box(
                 modifier = Modifier
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .padding(top = 22.dp),
                 contentAlignment = Alignment.TopCenter
             ) {
                 Column {

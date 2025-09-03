@@ -3,33 +3,30 @@ package org.hoshi.desktoptools.page
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import org.hoshi.desktoptools.utils.TimeUtils
 import org.hoshi.desktoptools.utils.rememberTicker
 import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
-fun WhatWeekPage(backAction: () -> Unit) {
+fun WhatWeekPage() {
     val ticker = rememberTicker()
     val currentTime by ticker.tickerFlow.collectAsState()
 
     Column {
-        IconButton(
-            { backAction.invoke() }
-        ) {
-            Text("返回")
-        }
         Box(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .padding(top = 22.dp),
             contentAlignment = Alignment.TopCenter
         ) {
 

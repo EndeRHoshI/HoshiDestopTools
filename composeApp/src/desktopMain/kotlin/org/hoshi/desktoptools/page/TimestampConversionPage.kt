@@ -22,7 +22,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
-fun TimestampConversionPage(backAction: () -> Unit) {
+fun TimestampConversionPage() {
     val currentTime by rememberTicker().tickerFlow.collectAsState() // 单位毫秒，内部使用一个 Job 来定时刷新，且生命周期跟随布局
     val timeUnit = remember { mutableStateOf(TimeUnit.MILLIS) }
     var sourceTimestamp by remember { mutableStateOf(currentTime) } // 直接从 flow 里面取一下当前时间
@@ -59,15 +59,10 @@ fun TimestampConversionPage(backAction: () -> Unit) {
     var targetTimestamp by remember { mutableStateOf("") } // 输入日期转换时间戳的结果
 
     Column {
-        IconButton(
-            { backAction.invoke() }
-        ) {
-            Text("返回")
-        }
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(60.dp, 0.dp),
+                .padding(top = 22.dp, start = 60.dp, end = 60.dp),
             contentAlignment = Alignment.TopCenter
         ) {
             Column {
