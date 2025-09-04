@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import hoshidesktoptools.composeapp.generated.resources.*
+import org.hoshi.desktoptools.page.HomePage
 import org.hoshi.desktoptools.page.RadixConversionPage
 import org.hoshi.desktoptools.page.Router
 import org.hoshi.desktoptools.page.TimestampConversionPage
@@ -35,7 +36,7 @@ fun App() {
         }
 
         when (page) {
-            Router.HOME -> Box(modifier = Modifier.fillMaxSize())
+            Router.HOME -> HomePage()
             Router.WHAT_WEEK -> WhatWeekPage()
             Router.RADIX_CONVERSION -> RadixConversionPage()
             Router.TIMESTAMP_CONVERSION -> TimestampConversionPage()
@@ -44,6 +45,11 @@ fun App() {
 
 }
 
+/**
+ * 切换页面的 Icon
+ * @param onClick 点击事件
+ * @param iconDrawableRes 图标资源
+ */
 @Composable
 fun PageIcon(onClick: () -> Unit, iconDrawableRes: DrawableResource) {
     Box(
