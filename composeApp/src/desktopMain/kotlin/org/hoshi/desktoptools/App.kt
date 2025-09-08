@@ -31,8 +31,8 @@ fun App() {
             Spacer(Modifier.height(20.dp))
             PageIcon({ page = Router.HOME }, Res.drawable.ic_home)
             PageIcon({ page = Router.WHAT_WEEK }, Res.drawable.ic_calendar)
-            PageIcon({ page = Router.RADIX_CONVERSION }, Res.drawable.ic_time)
-            PageIcon({ page = Router.TIMESTAMP_CONVERSION }, Res.drawable.ic_translate)
+            PageIcon({ page = Router.RADIX_CONVERSION }, Res.drawable.ic_translate)
+            PageIcon({ page = Router.TIMESTAMP_CONVERSION }, Res.drawable.ic_time)
         }
 
         when (page) {
