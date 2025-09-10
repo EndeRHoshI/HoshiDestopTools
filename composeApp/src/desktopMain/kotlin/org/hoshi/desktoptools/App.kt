@@ -29,15 +29,17 @@ fun App(innerPadding: PaddingValues) {
                 modifier = Modifier.fillMaxHeight().width(80.dp).padding(top = 100.dp).background(ColorRes.bgSecondary)
             ) {
                 Spacer(Modifier.height(20.dp))
-                Page.entries.forEach { currentPage ->
+                Page.entries.forEach { currentPage -> // 遍历 Page 枚举类里面的页面类，加载各个页面按钮
                     PageIcon(currentPage) { page = it }
                 }
             }
         }
+        // 页面的主要区域
         Box(Modifier.background(ColorRes.bgPrimary).padding(innerPadding)) {
             page.content.invoke()
         }
     }
+    // 从外部处理一下标题栏里面的标题，真正标题栏里面那个不太好处理
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.height(Dimens.titleBarHeight).padding(start = 110.dp)
