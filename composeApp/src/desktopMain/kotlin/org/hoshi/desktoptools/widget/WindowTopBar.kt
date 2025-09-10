@@ -1,5 +1,6 @@
 package org.hoshi.desktoptools.widget
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.window.WindowDraggableArea
@@ -13,6 +14,8 @@ import androidx.compose.ui.unit.dp
 import hoshidesktoptools.composeapp.generated.resources.Res
 import hoshidesktoptools.composeapp.generated.resources.ic_close
 import hoshidesktoptools.composeapp.generated.resources.ic_minimized
+import org.hoshi.desktoptools.res.ColorRes
+import org.hoshi.desktoptools.res.Dimens
 import org.hoshi.desktoptools.window.LocalWindowScope
 import org.jetbrains.compose.resources.painterResource
 
@@ -51,35 +54,41 @@ fun WindowTopBar(
 ) {
     val current = LocalWindowScope.current
     current.WindowDraggableArea {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp),
-        ) {
-            title()
-            Spacer(modifier = Modifier.weight(1f))
-            actions()
-            ActionIconButton(
-                onClick = {
-                    current.window.isMinimized = true
-                },
+        Column(modifier = Modifier.height(Dimens.titleBarHeight)) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1F)
+                    .background(ColorRes.transparent),
             ) {
-                Icon(
-                    painter = painterResource(Res.drawable.ic_minimized),
-                    contentDescription = "minimized",
-                    modifier = Modifier.size(20.dp)
-                )
+                title()
+                Spacer(modifier = Modifier.weight(1f))
+                actions()
+                ActionIconButton(
+                    onClick = {
+                        current.window.isMinimized = true
+                    },
+                ) {
+                    Icon(
+                        painter = painterResource(Res.drawable.ic_minimized),
+                        contentDescription = "minimized",
+                        modifier = Modifier.size(20.dp),
+                        tint = ColorRes.textPrimary
+                    )
+                }
+                ActionIconButton(
+                    onClick = onCloseRequest,
+                ) {
+                    Icon(
+                        painter = painterResource(Res.drawable.ic_close),
+                        contentDescription = "close",
+                        modifier = Modifier.size(20.dp),
+                        tint = ColorRes.textPrimary
+                    )
+                }
             }
-            ActionIconButton(
-                onClick = onCloseRequest,
-            ) {
-                Icon(
-                    painter = painterResource(Res.drawable.ic_close),
-                    contentDescription = "close",
-                    modifier = Modifier.size(20.dp)
-                )
-            }
+            Spacer(Modifier.padding(start = 98.dp).height(1.dp).fillMaxWidth().background(ColorRes.divider))
         }
     }
 }

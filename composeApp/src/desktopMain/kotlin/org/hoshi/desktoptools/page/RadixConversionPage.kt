@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import org.hoshi.desktoptools.res.ColorRes
 import org.hoshi.desktoptools.widget.SingleConfirmDialog
 import java.math.BigInteger
 
@@ -55,10 +56,8 @@ fun RadixConversionPage() {
         )
     }
 
-
     Box(
-        modifier = Modifier
-            .fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.TopCenter
     ) {
         Column {
@@ -85,7 +84,7 @@ fun RadixConversionPage() {
                         modifier = Modifier.padding(20.dp, 0.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Text("转换数字")
+                        Text("转换数字", color = ColorRes.textPrimary)
                         Spacer(Modifier.width(12.dp))
                         BasicTextField(
                             value = sourceNumber,
@@ -127,7 +126,7 @@ fun RadixConversionPage() {
                         modifier = Modifier.padding(20.dp, 0.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Text("转换结果")
+                        Text("转换结果", color = ColorRes.textPrimary)
                         Spacer(Modifier.width(12.dp))
                         BasicTextField(
                             value = targetNumber,
@@ -215,6 +214,6 @@ fun RadixCheckText(
                 }
             }
         )
-        Text("$radix 进制")
+        Text("$radix 进制", color = ColorRes.textPrimary)
     }
 }

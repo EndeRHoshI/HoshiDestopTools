@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Button
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -15,6 +14,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.hoshi.desktoptools.data.TimeUnit
 import org.hoshi.desktoptools.extentions.matchTrue
+import org.hoshi.desktoptools.res.ColorRes
 import org.hoshi.desktoptools.utils.TimeUtils
 import org.hoshi.desktoptools.utils.rememberTicker
 import org.hoshi.desktoptools.widget.DropdownMenu
@@ -69,6 +69,7 @@ fun TimestampConversionPage() {
                 Text(
                     "当前 timestamp 是 ${currentTime / 1000}，${getCurrentTimeStr(currentTime)}",
                     modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center),
+                    color = ColorRes.textPrimary
                 )
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -127,7 +128,7 @@ fun TimestampConversionPage() {
                         .fillMaxWidth()
                         .wrapContentSize(Alignment.Center)
                 ) {
-                    Text("时间")
+                    Text("时间", color = ColorRes.textPrimary)
                     DateView(year, "年", 70.dp)
                     DateView(month, "月")
                     DateView(day, "日")
@@ -222,7 +223,8 @@ private fun DateView(dateState: MutableState<String>, unit: String, width: Dp = 
     )
     Text(
         unit,
-        modifier = Modifier.padding(12.dp, 0.dp, 0.dp, 0.dp)
+        modifier = Modifier.padding(12.dp, 0.dp, 0.dp, 0.dp),
+        color = ColorRes.textPrimary
     )
 }
 

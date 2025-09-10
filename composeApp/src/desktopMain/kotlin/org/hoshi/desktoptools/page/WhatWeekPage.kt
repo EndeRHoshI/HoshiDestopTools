@@ -4,19 +4,17 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.platform.ClipEntry
+import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import org.hoshi.desktoptools.res.ColorRes
 import org.hoshi.desktoptools.utils.TimeUtils
 import org.hoshi.desktoptools.utils.rememberTicker
+import java.awt.datatransfer.StringSelection
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,7 +23,8 @@ fun WhatWeekPage() {
     val ticker = rememberTicker()
     val currentTime by ticker.tickerFlow.collectAsState()
     val untilFridayStr by mutableStateOf("距离周五下班还有 ${getTheTimeUntilFriday(currentTime)}")
-    val clipboard = LocalClipboardManager.current // 新版本不会用，先用着被弃用的版本先
+    val clipboard = LocalClipboard.current
+    val coroutineScope = rememberCoroutineScope()
     Column {
         Box(
             modifier = Modifier
@@ -33,14 +32,15 @@ fun WhatWeekPage() {
                 .padding(top = 22.dp),
             contentAlignment = Alignment.TopCenter
         ) {
-
             Column(
                 modifier = Modifier
                     .safeContentPadding()
             ) {
-                Text("当前是 ${getCurrentTimeStr(currentTime)}")
-                Spacer(Modifier.height(10.dp))
-                Text(getCurrentYearDay(currentTime))
+                Text("当前是 ${getCurrentTimeStr(currentTime)}", color = ColorRes.textPrimary)
+                Spacer(Modifier.height(30.dp))
+                Text(getCurrentYearDay(currentTime), color = ColorRes.textPrimary)
+                Spacer(Modifier.height(20.dp))
+                Text("今年进度", color = ColorRes.textPrimary)
                 Spacer(Modifier.height(10.dp))
                 LinearProgressIndicator(
                     progress = { getCurrentDay(currentTime).toFloat() / 365 },
@@ -48,17 +48,17 @@ fun WhatWeekPage() {
                     gapSize = 0.dp,
                     drawStopIndicator = {}
                 )
-                Spacer(Modifier.height(10.dp))
-                Text(getCurrentMonthWeek(currentTime))
-                Text(getCurrentYearWeekDay(currentTime))
+                Spacer(Modifier.height(30.dp))
+                Text(getCurrentMonthWeek(currentTime), color = ColorRes.textPrimary)
+                Text(getCurrentYearWeekDay(currentTime), color = ColorRes.textPrimary)
                 Spacer(Modifier.height(40.dp))
                 Text(
                     untilFridayStr,
                     Modifier.clickable {
-                        MainScope().launch {
-                            clipboard.setText(AnnotatedString(untilFridayStr))
+                        coroutineScope.launch {
+                            clipboard.setClipEntry(ClipEntry(StringSelection(untilFridayStr)))
                         }
-                    }
+                    }, color = ColorRes.textPrimary
                 )
             }
         }
