@@ -16,6 +16,7 @@ import hoshidesktoptools.composeapp.generated.resources.icon
 import org.hoshi.desktoptools.res.IconRes
 import org.hoshi.desktoptools.res.icons.Github
 import org.hoshi.desktoptools.extentions.openBrowse
+import org.hoshi.desktoptools.res.icons.Blog
 import org.hoshi.desktoptools.widget.ActionIconButton
 import org.hoshi.desktoptools.widget.WindowTopBar
 import org.hoshi.desktoptools.window.AppWindow
@@ -43,6 +44,15 @@ fun main() = application {
                             )
                         }
                     ) {
+                        ActionIconButton(
+                            onClick = { "https://enderhoshi.github.io/".openBrowse() }
+                        ) {
+                            Icon(
+                                imageVector = IconRes.Blog,
+                                contentDescription = "blog",
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
                         ActionIconButton(
                             onClick = { "https://github.com/EndeRHoshI/HoshiDestopTools".openBrowse() }
                         ) {
