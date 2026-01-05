@@ -43,17 +43,15 @@ fun ActionIconButton(
 /**
  * 窗口顶部标题栏
  * @param onCloseRequest 关闭事件
- * @param title 标题布局
  * @param actions 除了最小化、关闭之外的其他控件（可以继续加各种按钮）
  */
 @Composable
 fun WindowTopBar(
     onCloseRequest: () -> Unit,
-    title: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
 ) {
     val current = LocalWindowScope.current
-    current.WindowDraggableArea {
+    current.WindowDraggableArea { // 可拖拽操作区域
         Column(modifier = Modifier.height(Dimens.titleBarHeight)) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -62,7 +60,6 @@ fun WindowTopBar(
                     .weight(1F)
                     .background(ColorRes.transparent),
             ) {
-                title()
                 Spacer(modifier = Modifier.weight(1f))
                 actions()
                 ActionIconButton(

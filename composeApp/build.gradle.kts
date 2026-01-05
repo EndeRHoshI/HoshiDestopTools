@@ -33,7 +33,6 @@ kotlin {
     }
 }
 
-
 compose.desktop {
     application {
         mainClass = "org.hoshi.desktoptools.MainKt"
