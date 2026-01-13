@@ -19,12 +19,17 @@ import org.hoshi.desktoptools.res.ColorRes
 import org.hoshi.desktoptools.res.IconRes
 import org.hoshi.desktoptools.res.icons.Blog
 import org.hoshi.desktoptools.res.icons.Github
+import org.hoshi.desktoptools.utils.AdbHelper
 import org.hoshi.desktoptools.widget.ActionIconButton
 import org.hoshi.desktoptools.widget.WindowTopBar
 import org.hoshi.desktoptools.window.AppWindow
 import org.jetbrains.compose.resources.painterResource
 
 fun main() = application {
+    // 初始化 ADB 运行时环境
+    AdbHelper.initAdbRuntime { adbPath ->
+        println("初始化 ADB 运行时环境成功，adbPath = $adbPath")
+    }
     AppWindow(
         onCloseRequest = ::exitApplication,
         title = "",

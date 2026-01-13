@@ -1,39 +1,59 @@
 package org.hoshi.desktoptools.utils
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import org.hoshi.desktoptools.extentions.matchTrue
+import org.hoshi.desktoptools.runtime.AdbStore
+import org.jetbrains.skiko.hostOs
 import java.io.BufferedReader
+import java.io.File
 import java.io.InputStreamReader
 
 object AdbHelper {
 
-    /**
-     * 获取 ADB 可执行文件路径
-     */
-    private fun getAdbPath(): String {
-        return try {
-            // 尝试从环境变量中获取 ADB 路径
-            System.getenv("ANDROID_HOME")?.let {
-                "$it/Android/sdk/platform-tools/adb"
-            } ?: run {
-                // 如果环境变量未设置，尝试使用默认路径或直接使用 adb 命令
-                val home = System.getProperty("user.home")
-                val defaultPaths = listOf(
-                    "$home/Library/Android/sdk/platform-tools/adb",
-                    "/opt/android-sdk/platform-tools/adb",
-                    "adb" // 假设 adb 已在 PATH 中
-                )
+    private var adbPath: String = ""
 
-                defaultPaths.firstOrNull { path ->
-                    try {
-                        val process = ProcessBuilder(path, "version").start()
-                        process.waitFor()
-                        process.exitValue() == 0
-                    } catch (e: Exception) {
-                        false
+    /**
+     * 初始化 ADB 运行时环境
+     */
+    @Composable
+    fun initAdbRuntime(onInitialized: (String) -> Unit) {
+        LaunchedEffect(Unit) {
+            val adbStore = AdbStore()
+            adbStore.installRuntime()
+
+            // 检查并修复 ADB 执行权限（针对 Linux/Mac 系统）
+            if (!hostOs.isWindows) {
+                runCatching {
+                    val adbExecutable = File(adbStore.cacheFileDir, "adb")
+                    if (adbExecutable.exists() && !adbExecutable.canExecute()) {
+                        // 尝试设置可执行权限
+                        withContext(Dispatchers.IO) {
+                            val result = Runtime.getRuntime().exec(
+                                arrayOf("chmod", "755", adbExecutable.absolutePath)
+                            ).waitFor()
+
+                            if (result != 0) {
+                                // 如果 chmod 命令失败，尝试使用 ProcessBuilder
+                                val processBuilder =
+                                    ProcessBuilder("chmod", "755", adbExecutable.absolutePath)
+                                processBuilder.start().waitFor()
+                            }
+
+                            println("已自动设置 ADB 可执行权限: ${adbExecutable.absolutePath}")
+                        }
                     }
-                } ?: "adb"
+
+                }.onFailure {
+                    println("设置 ADB 可执行权限时出错: ${it.message}")
+                }
             }
-        } catch (e: Exception) {
-            "adb" // 回退到直接使用 adb 命令
+
+            // 到这里就初始化完成了，把 path 传出去
+            adbPath = File(adbStore.cacheFileDir, hostOs.isWindows.matchTrue("adb.exe", "adb")).absolutePath
+            onInitialized(adbPath)
         }
     }
 
@@ -42,7 +62,6 @@ object AdbHelper {
      */
     fun executeAdbCommand(vararg args: String): String {
         return runCatching {
-            val adbPath = getAdbPath()
             val command = mutableListOf(adbPath).apply { addAll(args) }
 
             if (!args.contains("devices")) { // 过滤掉刷新设备列表的指令
@@ -120,8 +139,6 @@ object AdbHelper {
                         id = deviceId,
                         name = deviceName.takeIf { it != "device:" } ?: model,
                         model = model,
-                        status = status,
-                        isOnline = status == "device"
                     )
                 )
             }
@@ -173,6 +190,4 @@ data class DeviceInfo(
     val id: String,
     val name: String,
     val model: String,
-    val status: String,
-    val isOnline: Boolean
 )

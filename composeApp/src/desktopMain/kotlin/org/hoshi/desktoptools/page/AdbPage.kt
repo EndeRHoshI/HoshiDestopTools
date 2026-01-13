@@ -277,35 +277,6 @@ fun DeviceCard(
                     modifier = Modifier.fillMaxWidth(0.8f)
                 )
             }
-
-            Column(
-                horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
-                Badge(
-                    containerColor = if (device.isOnline) {
-                        MaterialTheme.colorScheme.primaryContainer
-                    } else {
-                        MaterialTheme.colorScheme.errorContainer
-                    },
-                    contentColor = if (device.isOnline) {
-                        MaterialTheme.colorScheme.onPrimaryContainer
-                    } else {
-                        MaterialTheme.colorScheme.onErrorContainer
-                    }
-                ) {
-                    Text(
-                        text = if (device.isOnline) "在线" else "离线",
-                        fontSize = 12.sp
-                    )
-                }
-
-                Text(
-                    text = device.status,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.outline
-                )
-            }
         }
     }
 }
@@ -319,11 +290,9 @@ fun DeviceDetailsDialog(
     var isLoading by remember { mutableStateOf(false) }
 
     LaunchedEffect(device) {
-        if (device.isOnline) {
-            isLoading = true
-            deviceDetails = AdbHelper.getDeviceInfo(device.id)
-            isLoading = false
-        }
+        isLoading = true
+        deviceDetails = AdbHelper.getDeviceInfo(device.id)
+        isLoading = false
     }
 
     AlertDialog(
@@ -339,8 +308,6 @@ fun DeviceDetailsDialog(
                 ) {
                     CircularProgressIndicator()
                 }
-            } else if (!device.isOnline) {
-                Text("设备当前离线，无法获取详细信息")
             } else {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -349,7 +316,6 @@ fun DeviceDetailsDialog(
                     DeviceDetailItem("设备名称", device.name)
                     DeviceDetailItem("设备型号", device.model)
                     DeviceDetailItem("设备ID", device.id)
-                    DeviceDetailItem("连接状态", device.status)
 
                     Divider(modifier = Modifier.padding(vertical = 8.dp))
 
