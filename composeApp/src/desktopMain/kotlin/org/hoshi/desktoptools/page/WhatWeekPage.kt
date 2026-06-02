@@ -2,11 +2,13 @@ package org.hoshi.desktoptools.page
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.background
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ClipEntry
 import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.unit.dp
@@ -42,12 +44,22 @@ fun WhatWeekPage() {
                 Spacer(Modifier.height(20.dp))
                 Text("今年进度", color = ColorRes.textPrimary)
                 Spacer(Modifier.height(10.dp))
-                LinearProgressIndicator(
-                    progress = { getCurrentDay(currentTime).toFloat() / 365 },
-                    modifier = Modifier.width(300.dp),
-                    gapSize = 0.dp,
-                    drawStopIndicator = {}
-                )
+                val progress = getCurrentDay(currentTime).toFloat() / 365
+                Box(
+                    modifier = Modifier
+                        .width(300.dp)
+                        .height(8.dp)
+                        .background(Color(0xFF334139), shape = RoundedCornerShape(4.dp))
+                ) {
+                    if (progress > 0f) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .fillMaxWidth(progress)
+                                .background(Color(0xFFE5A93C), shape = RoundedCornerShape(4.dp))
+                        )
+                    }
+                }
                 Spacer(Modifier.height(30.dp))
                 Text(getCurrentMonthWeek(currentTime), color = ColorRes.textPrimary)
                 Text(getCurrentYearWeekDay(currentTime), color = ColorRes.textPrimary)

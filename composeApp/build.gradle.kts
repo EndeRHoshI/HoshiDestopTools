@@ -43,10 +43,10 @@ compose.desktop {
             packageVersion = "1.0.0"
 
             windows {
-                iconFile.set(project.file("launcher/icon.icns"))
+                iconFile.set(project.file("launcher/icon.ico"))
             }
             macOS {
-                iconFile.set(project.file("launcher/icon.ico"))
+                iconFile.set(project.file("launcher/icon.icns"))
             }
         }
     }
