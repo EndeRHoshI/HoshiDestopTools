@@ -37,23 +37,37 @@ fun RadixConversionPage() {
     val targetRadix = remember { mutableStateOf(10) } // 目标进制，默认 10
     val openAlertDialog = remember { mutableStateOf<Pair<String, String>?>(null) }
 
+    // 输入原始数字并执行进制转换，捕获异常并弹出错误提示
     fun inputSourceNumber(number: String) {
         sourceNumber = number
-        targetNumber = convert(
-            number,
-            sourceRadix.value,
-            targetRadix.value,
-            openAlertDialog
-        )
+        if (number.isEmpty()) {
+            targetNumber = ""
+            return
+        }
+        runCatching {
+            convert(number, sourceRadix.value, targetRadix.value)
+        }.onSuccess {
+            targetNumber = it
+        }.onFailure {
+            targetNumber = ""
+            openAlertDialog.value = Pair("无效输入", "'${number}' 不是有效的 ${sourceRadix.value} 进制数")
+        }
     }
 
+    // 当目标进制或原始进制改变时，重新计算结果
     fun updateTargetNumber() {
-        targetNumber = convert(
-            sourceNumber,
-            sourceRadix.value,
-            targetRadix.value,
-            openAlertDialog
-        )
+        if (sourceNumber.isEmpty()) {
+            targetNumber = ""
+            return
+        }
+        runCatching {
+            convert(sourceNumber, sourceRadix.value, targetRadix.value)
+        }.onSuccess {
+            targetNumber = it
+        }.onFailure {
+            targetNumber = ""
+            openAlertDialog.value = Pair("无效输入", "'${sourceNumber}' 不是有效的 ${sourceRadix.value} 进制数")
+        }
     }
 
     Box(
@@ -72,12 +86,13 @@ fun RadixConversionPage() {
                     Row(
                         modifier = Modifier
                     ) {
-                        RadixCheckText(2, sourceRadix) { inputSourceNumber("") }
-                        RadixCheckText(4, sourceRadix) { inputSourceNumber("") }
-                        RadixCheckText(8, sourceRadix) { inputSourceNumber("") }
-                        RadixCheckText(10, sourceRadix) { inputSourceNumber("") }
-                        RadixCheckText(16, sourceRadix) { inputSourceNumber("") }
-                        RadixCheckText(32, sourceRadix) { inputSourceNumber("") }
+                        // 使用状态提升设计，不再直接传递 MutableState 包装类
+                        RadixCheckText(2, sourceRadix.value == 2) { sourceRadix.value = it; inputSourceNumber("") }
+                        RadixCheckText(4, sourceRadix.value == 4) { sourceRadix.value = it; inputSourceNumber("") }
+                        RadixCheckText(8, sourceRadix.value == 8) { sourceRadix.value = it; inputSourceNumber("") }
+                        RadixCheckText(10, sourceRadix.value == 10) { sourceRadix.value = it; inputSourceNumber("") }
+                        RadixCheckText(16, sourceRadix.value == 16) { sourceRadix.value = it; inputSourceNumber("") }
+                        RadixCheckText(32, sourceRadix.value == 32) { sourceRadix.value = it; inputSourceNumber("") }
                     }
 
                     Row(
@@ -114,12 +129,12 @@ fun RadixConversionPage() {
                     Row(
                         modifier = Modifier.padding(0.dp, 52.dp, 0.dp, 0.dp)
                     ) {
-                        RadixCheckText(2, targetRadix) { updateTargetNumber() }
-                        RadixCheckText(4, targetRadix) { updateTargetNumber() }
-                        RadixCheckText(8, targetRadix) { updateTargetNumber() }
-                        RadixCheckText(10, targetRadix) { updateTargetNumber() }
-                        RadixCheckText(16, targetRadix) { updateTargetNumber() }
-                        RadixCheckText(32, targetRadix) { updateTargetNumber() }
+                        RadixCheckText(2, targetRadix.value == 2) { targetRadix.value = it; updateTargetNumber() }
+                        RadixCheckText(4, targetRadix.value == 4) { targetRadix.value = it; updateTargetNumber() }
+                        RadixCheckText(8, targetRadix.value == 8) { targetRadix.value = it; updateTargetNumber() }
+                        RadixCheckText(10, targetRadix.value == 10) { targetRadix.value = it; updateTargetNumber() }
+                        RadixCheckText(16, targetRadix.value == 16) { targetRadix.value = it; updateTargetNumber() }
+                        RadixCheckText(32, targetRadix.value == 32) { targetRadix.value = it; updateTargetNumber() }
                     }
 
                     Row(
@@ -157,12 +172,13 @@ fun RadixConversionPage() {
     }
 }
 
-
+/**
+ * 进制转换核心算法函数（解耦 UI 状态，抛出异常交由调用者处理）
+ */
 fun convert(
     sourceNumber: String,
     sourceRadix: Int,
-    targetRadix: Int,
-    openAlertDialog: MutableState<Pair<String, String>?>
+    targetRadix: Int
 ): String {
     require(sourceRadix in 2..36) { "原始进制必须在 2~36 之间" }
     require(targetRadix in 2..36) { "目标进制必须在 2~36 之间" }
@@ -177,40 +193,36 @@ fun convert(
     // 处理全为0的特殊情况
     if (number.all { it == '0' }) return if (isNegative) "-0" else "0"
 
-    return runCatching {
-        // 转换为十进制中间值
-        val decimalValue = BigInteger(number, sourceRadix)
+    // 转换为十进制中间值并输出目标进制
+    val decimalValue = BigInteger(number, sourceRadix)
+    var result = decimalValue.toString(targetRadix).uppercase()
 
-        // 转换为目标进制
-        var result = decimalValue.toString(targetRadix).uppercase()
+    // 恢复负号
+    if (isNegative && decimalValue != BigInteger.ZERO) {
+        result = "-$result"
+    }
 
-        // 恢复负号
-        if (isNegative && decimalValue != BigInteger.ZERO) {
-            result = "-$result"
-        }
-
-        result
-    }.onFailure {
-        openAlertDialog.value = Pair("无效输入", "'${sourceNumber}' 不是有效的 $sourceRadix 进制数")
-    }.getOrNull().orEmpty()
+    return result
 }
 
+/**
+ * 状态提升后的复选框组件，仅接收原始值和状态改变回调
+ */
 @Composable
 fun RadixCheckText(
     radix: Int,
-    currentRadix: MutableState<Int>,
-    checkAction: (Int) -> Unit
+    isChecked: Boolean,
+    onChecked: (Int) -> Unit
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.padding(12.dp, 0.dp)
     ) {
         Checkbox(
-            radix == currentRadix.value,
+            isChecked,
             onCheckedChange = {
                 if (it) { // 如果勾选才做出反应，反选不处理
-                    currentRadix.value = radix
-                    checkAction.invoke(radix)
+                    onChecked.invoke(radix)
                 }
             }
         )

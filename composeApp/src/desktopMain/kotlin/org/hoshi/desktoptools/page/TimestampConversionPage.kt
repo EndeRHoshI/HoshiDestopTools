@@ -129,12 +129,12 @@ fun TimestampConversionPage() {
                         .wrapContentSize(Alignment.Center)
                 ) {
                     Text("时间", color = ColorRes.textPrimary)
-                    DateView(year, "年", 70.dp)
-                    DateView(month, "月")
-                    DateView(day, "日")
-                    DateView(hour, "时")
-                    DateView(minute, "分")
-                    DateView(second, "秒")
+                    DateView(year.value, { year.value = it }, "年", 70.dp)
+                    DateView(month.value, { month.value = it }, "月")
+                    DateView(day.value, { day.value = it }, "日")
+                    DateView(hour.value, { hour.value = it }, "时")
+                    DateView(minute.value, { minute.value = it }, "分")
+                    DateView(second.value, { second.value = it }, "秒")
                 }
                 Box(
                     modifier = Modifier
@@ -197,11 +197,14 @@ fun TimestampConversionPage() {
     }
 }
 
+/**
+ * 状态提升后的日期文本输入组件，不再耦合 MutableState 包装类
+ */
 @Composable
-private fun DateView(dateState: MutableState<String>, unit: String, width: Dp = 50.dp) {
+private fun DateView(value: String, onValueChange: (String) -> Unit, unit: String, width: Dp = 50.dp) {
     BasicTextField(
-        value = dateState.value,
-        onValueChange = { dateState.value = it },
+        value = value,
+        onValueChange = onValueChange,
         modifier = Modifier
             .width(width)
             .padding(12.dp, 0.dp, 0.dp, 0.dp)

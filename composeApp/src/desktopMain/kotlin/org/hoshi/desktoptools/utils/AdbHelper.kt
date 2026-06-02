@@ -3,6 +3,7 @@ package org.hoshi.desktoptools.utils
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import org.hoshi.desktoptools.extentions.matchTrue
 import org.hoshi.desktoptools.runtime.AdbStore
@@ -58,10 +59,10 @@ object AdbHelper {
     }
 
     /**
-     * 执行 ADB 命令并返回结果
+     * 执行 ADB 命令并返回结果（挂起函数，在 IO 线程池中异步运行，防止阻塞主线程）
      */
-    fun executeAdbCommand(vararg args: String): String {
-        return runCatching {
+    suspend fun executeAdbCommand(vararg args: String): String = withContext(Dispatchers.IO) {
+        runCatching {
             val command = mutableListOf(adbPath).apply { addAll(args) }
 
             if (!args.contains("devices")) { // 过滤掉刷新设备列表的指令
@@ -88,10 +89,10 @@ object AdbHelper {
     }
 
     /**
-     * 获取已连接的 Android 设备列表
+     * 获取已连接的 Android 设备列表（挂起函数）
      * @return 设备信息列表，包含设备ID、名称和状态
      */
-    fun getConnectedDevices(): List<DeviceInfo> {
+    suspend fun getConnectedDevices(): List<DeviceInfo> {
         val output = executeAdbCommand("devices", "-l")
         return parseDevicesOutput(output)
     }
@@ -148,9 +149,9 @@ object AdbHelper {
     }
 
     /**
-     * 获取设备详细信息
+     * 获取设备详细信息（挂起函数）
      */
-    fun getDeviceInfo(deviceId: String): Map<String, String> {
+    suspend fun getDeviceInfo(deviceId: String): Map<String, String> {
         val info = mutableMapOf<String, String>()
 
         // 获取设备型号
@@ -173,14 +174,14 @@ object AdbHelper {
     }
 
     /**
-     * 刷新设备连接
+     * 刷新设备连接（挂起函数，使用非阻塞 delay 替代 Thread.sleep，避免卡死 UI）
      */
-    fun refreshDevices(): List<DeviceInfo> {
+    suspend fun refreshDevices(): List<DeviceInfo> {
         // 重启 ADB 服务以刷新设备列表
         executeAdbCommand("kill-server")
-        Thread.sleep(1000) // 等待服务器关闭
+        delay(1000) // 挂起 1 秒等待服务器关闭
         executeAdbCommand("start-server")
-        Thread.sleep(2000) // 等待服务器启动并扫描设备
+        delay(2000) // 挂起 2 秒等待服务器启动并扫描设备
 
         return getConnectedDevices()
     }

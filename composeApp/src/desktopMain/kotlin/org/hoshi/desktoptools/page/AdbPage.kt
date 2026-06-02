@@ -171,25 +171,41 @@ fun AdbPage() {
                     Row {
                         TextButton(
                             modifier = Modifier,
-                            onClick = { AdbHelper.executeAdbCommand("-s", devices.firstOrNull()?.id.orEmpty(), "shell", "wm size 720x1280") }
+                            onClick = {
+                                coroutineScope.launch {
+                                    AdbHelper.executeAdbCommand("-s", devices.firstOrNull()?.id.orEmpty(), "shell", "wm size 720x1280")
+                                }
+                            }
                         ) {
                             Text("设置分辨率", color = Color.White)
                         }
                         TextButton(
                             modifier = Modifier,
-                            onClick = { AdbHelper.executeAdbCommand("-s", "8KE5T19731012277", "shell", "wm size reset") }
+                            onClick = {
+                                coroutineScope.launch {
+                                    AdbHelper.executeAdbCommand("-s", "8KE5T19731012277", "shell", "wm size reset")
+                                }
+                            }
                         ) {
                             Text("还原分辨率", color = Color.White)
                         }
                         TextButton(
                             modifier = Modifier,
-                            onClick = { AdbHelper.executeAdbCommand("-s", "8KE5T19731012277", "shell", "wm density 160") }
+                            onClick = {
+                                coroutineScope.launch {
+                                    AdbHelper.executeAdbCommand("-s", "8KE5T19731012277", "shell", "wm density 160")
+                                }
+                            }
                         ) {
                             Text("设置 DPI", color = Color.White)
                         }
                         TextButton(
                             modifier = Modifier,
-                            onClick = { AdbHelper.executeAdbCommand("-s", "8KE5T19731012277", "shell", "wm density reset") }
+                            onClick = {
+                                coroutineScope.launch {
+                                    AdbHelper.executeAdbCommand("-s", "8KE5T19731012277", "shell", "wm density reset")
+                                }
+                            }
                         ) {
                             Text("还原 DPI", color = Color.White)
                         }
